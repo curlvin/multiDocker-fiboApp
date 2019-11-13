@@ -1,0 +1,5 @@
+FROM nginx
+
+#copy the defult.config form curent to overide the one in the image
+        #source       #destination
+COPY ./default.conf /etc/nginx/conf.d/default.conf
