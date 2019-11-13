@@ -1,0 +1,35 @@
+#circumventing rake file not found error
+language: generic
+
+# give travis super user power
+sudo: required
+
+#Tell travis to get a copy of docker ready to go
+services:
+  - docker
+
+#configurations to be done before test runs
+before_install: 
+#build a test image using docker dev file
+  - docker build -t macshild/react-test -f ./client/dockerfile.dev .
+
+#commands needed to be executed to run the test suite
+script:
+  #tell travis to run test on docker and exit test upon completion
+  - docker run -e CI=true macshild/react-test npm run test
+
+#build these images after successful test using dockerfiles from their dirs
+after_success:
+  - docker build -t macshild/client ./client
+  - docker build -t macshild/server ./server
+  - docker build -t macshild/nginx ./nginx
+  - docker build -t macshild/worker ./worker
+
+  #log into docker cli 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #push the built images to docker hub
+  - docker push macshild/client
+  - docker push macshild/server
+  - docker push macshild/nginx
+  - docker push macshild/worker
