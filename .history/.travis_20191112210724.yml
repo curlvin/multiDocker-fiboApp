@@ -18,7 +18,7 @@ script:
   #tell travis to run test on docker and exit test upon completion
   - docker run -e CI=true macshild/react-test npm run test
 
-#build these images after successful test using dockerfile from their dirs
+#build these images after successful test using dockerfiles from their dirs
 after_success:
   - docker build -t macshild/client ./client
   - docker build -t macshild/server ./server
