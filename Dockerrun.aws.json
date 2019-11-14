@@ -1,0 +1,39 @@
+{
+    "AWSEBDockerrunVersion":2,
+    "containerDefinitions":[
+        {
+            "name":"client",
+            "image":"macshild/client",
+            "hostname":"client",
+            "essential":false
+        },
+        {
+            "name":"worker",
+            "image":"macshild/worker",
+            "hostname":"worker",
+            "essential":false            
+        },
+        {
+            "name":"server",
+            "image":"macshild/server",
+            "hostname":"api",
+            "essential":false 
+        },
+        {
+            "name":"nginx",
+            "image":"macshild/nginx",
+            "hostname":"nginx",
+            "essential":true,
+            "PortMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links":["client","server"] 
+        }
+                   
+    ]
+
+
+}
